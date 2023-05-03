@@ -67,7 +67,7 @@ def init_ad_ios(device1_data, device2_data, device3_data):
 def process_data(test):
     if test.test_name == "receive_packet":
         io = test.device1v8.dio_map[0]
-        pulse_count = test.receive_packet(250)
+        pulse_count = test.receive_packet(25)
         if pulse_count == 2:
             print("Test started")
         for i in range(5, 8):
@@ -76,7 +76,7 @@ def process_data(test):
             test.send_packet(i, 25)
             while io.get_value():
                 pass
-            pulse_count = test.receive_packet(250)
+            pulse_count = test.receive_packet(25)
             if pulse_count == i:
                 print(f"sent {i} pulses successfully")
             else:
@@ -86,7 +86,7 @@ def process_data(test):
     else:
         phase = 0
         for passing in test.passing_criteria:
-            pulse_count = test.receive_packet(250)
+            pulse_count = test.receive_packet(25)
             if pulse_count == passing:
                 print(f"pass phase {phase}")
                 phase = phase + 1
@@ -104,7 +104,7 @@ def process_uart(test, uart):
     uart.open()
     rgRX = ""
     timeout = time.time() + 50
-    while test.receive_packet(250) != 2:
+    while test.receive_packet(25) != 2:
         pass
     print("start UART transmission")
     if test.test_name == "uart":
@@ -120,15 +120,15 @@ def process_uart(test, uart):
                 print(f"{test.test_name} test failed with {test.voltage}v supply")
                 uart.close()
                 return False
-        pulse_count = test.receive_packet(250)
+        pulse_count = test.receive_packet(25)
         if pulse_count == 5:
             print("end UART transmission")
     elif test.test_name == "uart_reception":
         for i in test.passing_criteria:
-            pulse_count = test.receive_packet(250)
+            pulse_count = test.receive_packet(25)
             if pulse_count == 4:
                 uart.write(i)
-            pulse_count = test.receive_packet(250)
+            pulse_count = test.receive_packet(25)
             if pulse_count == 6:
                 print(f"Successfully sent {i} over UART!")
             if pulse_count == 9:
@@ -144,7 +144,7 @@ def process_uart(test, uart):
                     dat = uart_data.value.decode()
                     if dat in test.passing_criteria:
                         uart.write(dat)
-                        pulse_count = test.receive_packet(250)
+                        pulse_count = test.receive_packet(25)
                         if pulse_count == 6:
                             print(f"Successfully sent {dat} over UART!")
                             break
@@ -154,7 +154,7 @@ def process_uart(test, uart):
                             return False
     elif test.test_name == "IRQ_uart_rx":
         uart.write("I")
-        pulse_count = test.receive_packet(250)
+        pulse_count = test.receive_packet(25)
         if pulse_count == 5:
             print(f"{test.test_name} Test passed!")
             return True
@@ -193,7 +193,7 @@ def process_uart(test, uart):
     #     return True
 
     for i in range(0, 3):
-        pulse_count = test.receive_packet(250)
+        pulse_count = test.receive_packet(25)
         if pulse_count == 3:
             print("end UART test")
     uart.close()
@@ -204,7 +204,7 @@ def process_mem(test):
     phase = 0
     mem_size = 0
     while True:
-        pulse_count = test.receive_packet(250)
+        pulse_count = test.receive_packet(25)
         if pulse_count == 1:
             print("start test")
         if pulse_count == 5:
@@ -303,7 +303,7 @@ def process_io(test, io):
 def process_io_plud(test):
     p1_rt = False
     p2_rt = False
-    pulse_count = test.receive_packet(250)
+    pulse_count = test.receive_packet(25)
 
     if pulse_count == 1:
         print("Start test")
@@ -427,7 +427,7 @@ def process_external(test):
         channel = 12
     phase = 0
     for passing in test.passing_criteria:
-        pulse_count = test.receive_packet(250)
+        pulse_count = test.receive_packet(25)
         if pulse_count == passing:
             print(f"pass phase {phase}")
             if phase == 0:
