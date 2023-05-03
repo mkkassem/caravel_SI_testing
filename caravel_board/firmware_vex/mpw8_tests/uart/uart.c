@@ -82,6 +82,7 @@ void main()
     int i, j;
     configure_mgmt_gpio();
     configure_gpio(6, GPIO_MODE_MGMT_STD_OUTPUT);
+    count_down(PULSE_WIDTH * 50);
     // gpio_config_io();
     gpio_config_load();
 
