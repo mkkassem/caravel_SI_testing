@@ -3,7 +3,7 @@
 
 #include <timer0.h>
 #include <mgmt_gpio.h>
-#define PULSE_WIDTH 2500000
+#define PULSE_WIDTH 250000
 
 /**
  * Performs a countdown using timer0.
@@ -136,7 +136,7 @@ bool recieved_pulse_num(int number_of_pulses)
 {
     int pulses_num = 0;
     int old_gpio = reg_gpio_in;
-    int timeout = 50000 * number_of_pulses;
+    int timeout = 100000 * number_of_pulses;
     int timeout_counter = 0;
     int gpio;
     while (timeout_counter < timeout)
@@ -148,7 +148,7 @@ bool recieved_pulse_num(int number_of_pulses)
             pulses_num++;
             old_gpio = gpio;
         }
-        if (number_of_pulses * 2 == pulses_num)
+        if (number_of_pulses * 2 == pulses_num - 1)
             return true;
     }
     return false;
